@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -11,10 +12,16 @@ namespace Examples
 {
     class Program
     {
-        
+
 
         static void Main(string[] args)
         {
+            TimeSpan time = new TimeSpan(1, 0, 0);
+
+
+            //		time.Ticks		long
+
+
             //Singleton.Current.Action();
             //Animal animal = new Animal();
 
@@ -51,19 +58,30 @@ namespace Examples
 
             Console.WriteLine(hashtable[4]);*/
 
-            /*Calc cal1 = Program.FuncCalc;
+            Calc cal1 = Program.FuncCalc;
+            //Console.WriteLine(cal1.Invoke(2, 5));
+
+
+            cal1 += Program.FuncCalc2;
+
             Console.WriteLine(cal1.Invoke(2, 5));
-
-
-            cal1 = Program.FuncCalc2;
-            Console.WriteLine(cal1.Invoke(2, 5));
-
+            /*
             cal1 = delegate (int x, int y) 
             {
                 return x + y * 2;
             };
 
             Console.WriteLine(cal1.Invoke(2, 5));*/
+
+            Dog dog = new Dog();
+            dog.Walk();
+            dog.Walk2();
+            /*
+            var age = 10;
+            var tax = 10.5F;
+
+            var dog1 = new Dog();
+            dog1.Walk();*/
 
             Person oPerson = new Person();
             oPerson.iAge = 27;
@@ -93,6 +111,17 @@ namespace Examples
         }
     }
 
+    public static class Helper
+    {
+        public static void Walk2(this Dog dog)
+        {
+            var obj = new { Age = 25, Name = "Sam" };
+
+            dog.Walk();
+            Console.WriteLine("Walked");
+        }
+    }
+
     public class Singleton
     {
         private static Singleton context;
@@ -106,7 +135,7 @@ namespace Examples
         {
             Console.WriteLine("executed constuctor");
         }
-        
+
 
         public static Singleton Current
         {
@@ -119,15 +148,105 @@ namespace Examples
         }
     }
 
-    public class Animal
+    public class Animal : Fly, Fish
     {
-        public Animal() {
+        private int countWing = 0;
+        public int CountWing
+        {
+            get { return countWing; }
+            set { countWing = value; }
+        }
+
+        public Animal()
+        {
             Console.WriteLine("constructor Animal");
         }
 
         static Animal()
         {
             Console.WriteLine("Static constructor Animal");
+        }
+
+        public virtual void Walk()
+        {
+            countWing++;
+        }
+
+        public int Count()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void Fly()
+        {
+        }
+
+        public void Run()
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public interface Fly
+    {
+        int CountWing { get; set; }
+        int Count();
+    }
+
+    public interface Fish
+    {
+        int Count();
+        void Run();
+    }
+
+    public class Dog : Animal
+    {
+        public sealed override void Walk()
+        {
+            base.Walk();
+            DataSet dataSet = new DataSet();
+            dataSet.Tables.Add(new DataTable());
+        }
+
+
+    }
+
+    public abstract class Pet
+    {
+
+        public abstract void Wow();
+        public virtual void Run()
+        {
+            Console.WriteLine("Run");
+        }
+    }
+
+    public struct Cat
+    {
+        //Nullable<Decimal> == decimal?
+        public int CountLeg { get; set; }
+
+        void Muyau()
+        {
+            Console.WriteLine("Muyau");
+        }
+    }
+
+    public class ChildPet : Pet, Fish
+    {
+        public override void Wow()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void Run()
+        {
+            Console.WriteLine("Not Run");
+        }
+
+        public int Count()
+        {
+            throw new NotImplementedException();
         }
     }
 
@@ -141,9 +260,9 @@ namespace Examples
             {
                 //if (amount < 1)
                 //{
-                    Thread.Sleep(1000);
+                Thread.Sleep(1000);
 
-                    Console.WriteLine("Started work procees and amount is {0}", ++amount);
+                Console.WriteLine("Started work procees and amount is {0}", ++amount);
                 //}
             }
         }
