@@ -12,8 +12,6 @@ namespace Examples
 {
     class Program
     {
-
-
         static void Main(string[] args)
         {
             TimeSpan time = new TimeSpan(1, 0, 0);
@@ -58,13 +56,16 @@ namespace Examples
 
             Console.WriteLine(hashtable[4]);*/
 
-            Calc cal1 = Program.FuncCalc;
+            Calc cal1, cal2, multiCalc;
+            cal1 = Program.FuncCalc;
+            
             //Console.WriteLine(cal1.Invoke(2, 5));
 
+            cal2 = Program.FuncCalc2;
 
-            cal1 += Program.FuncCalc2;
+            multiCalc = cal1 + cal2;
 
-            Console.WriteLine(cal1.Invoke(2, 5));
+            multiCalc.Invoke(2, 5);
             /*
             cal1 = delegate (int x, int y) 
             {
@@ -98,16 +99,16 @@ namespace Examples
             Console.ReadLine();
         }
 
-        public delegate int Calc(int x, int y);
+        public delegate void Calc(int x, int y);
 
-        public static int FuncCalc(int x, int y)
+        public static void FuncCalc(int x, int y)
         {
-            return x + y;
+            Console.WriteLine(x + y);
         }
 
-        public static int FuncCalc2(int x, int y)
+        public static void FuncCalc2(int x, int y)
         {
-            return x * y;
+            Console.WriteLine(x * y);
         }
     }
 
